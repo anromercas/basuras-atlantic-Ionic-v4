@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="primary">
+      <ion-back-button defaultHref="/" slot="start"></ion-back-button>
+    <ion-title>Nueva Basura</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <h1>Nueva Basura</h1>
+
+    <form [formGroup]="myForm" (ngSubmit)="saveData()">
+        <ion-list>
+            <ion-item>
+                <ion-label>Zona</ion-label>
+                <ion-select formControlName="zona" interface="action-sheet" (ionChange)="siglasZona($event)">
+                    <ion-select-option *ngFor="let zona of zonas" [value]="zona.nombre + ' - ' + zona.area">{{zona.nombre}} - {{zona.area}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-label>Nombre:</ion-label>
+                <ion-select formControlName="nombre" interface="action-sheet" (ionChange)="siglasBasura($event)">
+                    <ion-select-option *ngFor="let basura of basuras" [value]="basura.nombre">{{basura.nombre}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-label>Código Contenedor:</ion-label>
+                <ion-input formControlName="codigoContenedor" [(ngModel)]="codCont" type="text" placeholder="*Iniciales zona y contenedor - numero repetición Ej: ACCRSU - 2"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Número Contenedor:</ion-label>
+                <ion-input formControlName="numeroContenedor" type="number" [(ngModel)]="numCont"></ion-input>
+            </ion-item>
+            <ion-row>
+                <ion-col>
+                    <ion-slides [options]="opcionesSlide">
+                        <ion-slide *ngFor="let basura of basuras">
+                          <ion-label position="fixed">
+                            <ion-img 
+                              class="pick-avatar" 
+                              (click)="seleccionarIcono( basura )" 
+                              src="/assets/icon/contenedores/{{ basura.imgContenedor }}" 
+                              [ngClass]="{ 'pick-avatar-seleccionado': basura.seleccionado }">
+                            </ion-img>
+                            <ion-text class="ion-text-wrap">
+                                <p> {{ basura.nombre }} </p>
+                            </ion-text>
+                          </ion-label>
+                        </ion-slide>
+                    </ion-slides>
+                </ion-col>
+            </ion-row>
+            <ion-avatar slot="start" *ngFor="let img of imagenPreview" class="imgPreview">
+                <img [src]="img" formControlName="imgContenedor">
+            </ion-avatar>
+
+        </ion-list>
+        <div class="ion-padding">
+            <ion-button expand="block" type="submit" [disabled]="!myForm.valid">Guardar</ion-button>
+        </div>
+    </form>
+
+</ion-content>

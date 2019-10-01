@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-toolbar color="primary">
+      <ion-back-button defaultHref="/" slot="start"></ion-back-button>
+    <ion-title
+      >{{ basura.nombre }}
+      <small>{{ basura.codigoContenedor }}</small></ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-fab vertical="top" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="camara('img')" color="secondary">
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h1 style="color: red;" *ngIf="!imagenNueva">
+          Foto Actual - Fecha: {{ basura.fecha | date: "dd/MM/yyyy" }}
+        </h1>
+        <h1 style="color: #32db64;" *ngIf="imagenNueva">
+          Foto Nueva - Fecha: {{ fechaHoy | date: "dd/MM/yyyy" }}
+        </h1>
+        <ion-img *ngIf="!imagenPreview" [src]="basura.img | imagenDetalle: 'basuras'"></ion-img>
+
+        <ion-img *ngIf="imagenPreview" [src]="imagenPreview"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-list radio-group>
+          <h2>Calidad Segregación</h2>
+          <ion-item
+            *ngFor="let calificacion of calificaciones"
+            [color]="calificacion.color"
+          >
+            <ion-label>{{ calificacion.nombre }}</ion-label>
+            <ion-radio
+              [value]="calificacion.puntos"
+              (ionSelect)="calificar(calificacion)"
+              [checked]="calificacion.seleccionado"
+            ></ion-radio>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col>
+        <ion-list radio-group>
+          <h2>Estado Contenedor</h2>
+          <ion-item *ngFor="let opcion of masOpciones" [color]="opcion.color">
+            <ion-label>{{ opcion.nombre }}</ion-label>
+            <ion-checkbox
+              (ionChange)="cambiarEstado(opcion)"
+              [disabled]="opcion.deshabilitado"
+              [(ngModel)]="opcion.seleccionado"
+              [checked]="opcion.seleccionado"
+            ></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-list *ngIf="calificacion < 5">
+          <h2>Resíduos <small>¿Qué no debería estar?</small></h2>
+          <ion-item
+            *ngFor="let residuo of residuos"
+            (click)="seleccionar(residuo)"
+            [color]="residuo.color"
+          >
+            <ion-thumbnail slot="start">
+              <img [src]="residuo.img" />
+            </ion-thumbnail>
+            <ion-text class="ion-text-wrap">
+              <h2>{{ residuo.nombre }}</h2>
+            </ion-text>
+            <ion-icon
+              *ngIf="residuo.seleccionado"
+              name="checkmark"
+              slot="end"
+            ></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <h2>
+      Observaciones
+      <ion-button type="submit" (click)="camara('imgDetalle')">
+        <ion-icon name="camera" slot="start"></ion-icon>&nbsp; Foto Detalle
+      </ion-button>
+      <ion-thumbnail slot="end" *ngIf="imagenPreviewDetalle">
+        <img [src]="imagenPreviewDetalle" />
+      </ion-thumbnail>
+    </h2>
+
+    <ion-item>
+      <ion-textarea
+        [(ngModel)]="observaciones"
+        rows="6"
+        cols="20"
+        placeholder="Escribe alguna observación sobre este contenedor..."
+      ></ion-textarea>
+    </ion-item>
+
+    <ion-button
+      expand="block"
+      type="submit"
+      (click)="guardar()"
+      [disabled]="imagenPreview.length <= 1"
+    >
+      Guardar
+    </ion-button>
+    <ion-button expand="block" type="reset" (click)="reiniciar()" color="danger">
+      Reiniciar Formulario
+    </ion-button>
+  </ion-grid>
+</ion-content>

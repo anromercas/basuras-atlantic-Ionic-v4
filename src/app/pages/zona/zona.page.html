@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="primary">
+        <ion-back-button defaultHref="/" slot="start"></ion-back-button>
+    <ion-title>{{ zona.nombre }} - {{ zona.area }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+        <img [src]="zona.imagen">
+
+    <ion-list>
+        <ion-item *ngFor="let basura of basurasDeZona" [color]="basura.color">
+            <ion-thumbnail slot="start" (click)="calificar(basura)" class="thumbnailAvatar">
+                <!--    <img [src]="basura.imgContenedor | imagenDetalle:'imgcontenedor'"> -->
+                <img src="/assets/icon/contenedores/{{ basura.imgContenedor }}">
+            </ion-thumbnail>
+            <ion-text (click)="calificar(basura)" class="ion-text-wrap">
+                <h5>{{ basura.numeroContenedor }}. {{ basura.nombre }} <small>( {{ basura.codigoContenedor }} )</small> </h5>
+            </ion-text>
+            <ion-icon color="danger" name="trash" *ngIf="admin" (click)="borrarBasura(basura._id)" slot="end"></ion-icon>
+            <ion-icon name="eye" (click)="irBasura(basura)" slot="end"></ion-icon>
+            <!-- <button ion-button item-end [disabled]="!basura.img" (click)="irBasura(basura)"><ion-icon item-end name="eye"></ion-icon></button> -->
+        </ion-item>
+    </ion-list>
+
+</ion-content>

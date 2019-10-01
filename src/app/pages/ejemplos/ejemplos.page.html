@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar color="primary">
+      <ion-back-button defaultHref="/" slot="start"></ion-back-button>
+    <ion-title>Ejemplos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-content>
+
+        <ion-list>
+            <ion-list-header class="ion-text-center">
+                <h1> <b> <u> Contenedores Sucios </u>  </b> </h1>
+            </ion-list-header>
+            <ion-item *ngFor="let basura of basurasDeEjemplo">
+                <ion-thumbnail slot="start" (click)="verImg(basura)">
+                    <img [src]="basura.img">
+                </ion-thumbnail>
+                <ion-label>
+                  <ion-text class="ion-text-wrap">
+                    <h2><b> {{ basura.nombre }} </b></h2>
+                  </ion-text>
+                  <ion-text >
+                      <h2> {{ basura.zona }} </h2>
+                  </ion-text>
+                  <ion-text class="ion-text-wrap">
+                    <h3> Calificación: {{ basura.calificacion }} </h3>
+                  </ion-text>
+                  <ion-text class="ion-text-wrap">
+                    <h4> Estado: {{ basura.estado }} </h4>
+                  </ion-text>
+                </ion-label>
+            </ion-item>
+    
+            <ion-list-header class="ion-text-center">
+                <h1> <b> <u> Contenedores Rotos </u>  </b> </h1>
+            </ion-list-header>
+            <ion-item *ngFor="let basura of basurasDeEjemplo2">
+                <ion-thumbnail slot="start" (click)="verImg(basura)">
+                    <img [src]="basura.img">
+                </ion-thumbnail>
+                <ion-label>
+                    <ion-text class="ion-text-wrap">
+                      <h2><b> {{ basura.nombre }} </b></h2>
+                    </ion-text>
+                    <ion-text >
+                        <h2> {{ basura.zona }} </h2>
+                    </ion-text>
+                    <ion-text class="ion-text-wrap">
+                      <h3> Calificación: {{ basura.calificacion }} </h3>
+                    </ion-text>
+                    <ion-text class="ion-text-wrap">
+                      <h4> Estado: {{ basura.estado }} </h4>
+                    </ion-text>
+                  </ion-label>
+            </ion-item>
+    
+    
+            <ion-list-header class="ion-text-center">
+                <h1> <b> <u> Contenedores llenos </u>  </b> </h1>
+            </ion-list-header>
+            <ion-item *ngFor="let basura of basurasDeEjemplo3">
+                <ion-thumbnail slot="start">
+                    <img [src]="basura.img" (click)="verImg(basura)">
+                </ion-thumbnail>
+                <ion-label>
+                    <ion-text class="ion-text-wrap">
+                      <h2><b> {{ basura.nombre }} </b></h2>
+                    </ion-text>
+                    <ion-text >
+                        <h2> {{ basura.zona }} </h2>
+                    </ion-text>
+                    <ion-text class="ion-text-wrap">
+                      <h3> Calificación: {{ basura.calificacion }} </h3>
+                    </ion-text>
+                    <ion-text class="ion-text-wrap">
+                      <h4> Estado: {{ basura.estado }} </h4>
+                    </ion-text>
+                  </ion-label>
+            </ion-item>
+        </ion-list>
+    
+
+</ion-content>

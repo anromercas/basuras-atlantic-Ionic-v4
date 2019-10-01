@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar color="primary">
+      <ion-back-button defaultHref="/" slot="start"></ion-back-button>
+    <ion-title>{{ basura.nombre }} <small> {{ basura.codigoContenedor }} </small> </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block" (click)="calificar()" color="secondary">
+            Calificar
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" (click)="verEjemplos()" color="primary">
+            Ejemplos
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list>
+      
+      <h2>Histórico</h2>
+        <ion-card *ngIf="!basura.img" color="warning">
+          
+            <ion-card-content>
+              No hay contenido
+            </ion-card-content>
+          
+        </ion-card>
+
+      <ion-item *ngFor="let basura of basuras">
+          <ion-thumbnail slot="start">
+              <img [src]="basura.img | imagenDetalle " (click)="verImg(basura)">
+          </ion-thumbnail>
+
+          <ion-label>
+            <ion-text class="ion-text-wrap">
+              <h2><b> {{ basura.nombre }} </b></h2>
+            </ion-text>
+
+            <ion-text class="ion-text-wrap">
+                <h2> {{ basura.zona }} </h2>
+            </ion-text>  
+
+            <ion-text class="ion-text-wrap">
+                <h3 *ngIf="basura.calificacion"> Calificación: {{ basura.calificacion }} </h3>
+            </ion-text>  
+
+            <ion-text class="ion-text-wrap">
+                <h4 *ngIf="basura.residuo"> Residuo: {{ basura.residuo }} </h4>
+            </ion-text>  
+
+            <ion-text class="ion-text-wrap">
+                <h4 *ngIf="basura.estado"> Estado: {{ basura.estado }} </h4>
+            </ion-text>
+
+            <ion-text class="ion-text-wrap">
+                <p *ngIf="basura.observaciones"> Observaciones: {{ basura.observaciones }} </p>
+            </ion-text>  
+
+            <ion-text class="ion-text-wrap">
+                <p *ngIf="basura.fecha"> Calificación hecha: {{ basura.fecha | date:"medium" }} </p>
+            </ion-text>
+          </ion-label>
+          
+      </ion-item>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="siguientes($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
