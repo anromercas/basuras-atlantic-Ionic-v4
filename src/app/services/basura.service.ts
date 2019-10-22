@@ -87,7 +87,7 @@ export class BasuraService {
   }
 
   // Actualiza una Basura
-  actualizarBasura( id: string, basura: Basura ){
+  actualizarBasura( id: string, basura: Basura ) {
 
     console.log('Actualiza basura provider ', basura);
 

@@ -225,7 +225,7 @@ export class CalificaPage implements OnInit {
         this.uiProv.alertaConTiempo(
           'Guardado!',
           'La calificación se ha guardado con éxito!',
-          2000
+          1500
         );
         this.navCtrl.pop();
       });

@@ -34,7 +34,7 @@ export class ZonaPage implements OnInit {
                 }
               });
 
-              if (usuarioService.role === 'ADMIN_ROLE') {
+              if (usuarioService.role === 'SUPER_ADMIN_ROLE') {
                   this.admin = true;
                 } else {
                   this.admin = false;

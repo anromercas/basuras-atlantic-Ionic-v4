@@ -29,7 +29,7 @@ export class HomePage implements OnInit {
 
   ionViewDidEnter() {
     console.log(this.usuarioService.role);
-    if (this.usuarioService.role === 'ADMIN_ROLE') {
+    if (this.usuarioService.role === 'SUPER_ADMIN_ROLE') {
       this.admin = true;
     } else {
       this.admin = false;

@@ -6,6 +6,7 @@ import { environment } from "src/environments/environment";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Storage } from "@ionic/storage";
 import { map } from "rxjs/operators";
+import { NavigationExtras } from '@angular/router';
 
 const URL = environment.url;
 
@@ -23,7 +24,8 @@ export class UsuarioService {
     private platform: Platform,
     private storage: Storage,
     private navCtrl: NavController,
-    private uiService: UiService
+    private uiService: UiService,
+    private usuarioService: UsuarioService,
   ) {}
 
   // =============================================================
@@ -59,15 +61,51 @@ export class UsuarioService {
             this.token = resp.token;
             this.guardarStorage();
             resolve(true);
+          } else if( resp['ok'] === false) {
+            console.log(resp['err'].message);
+            // redirijo a la pagina de cambiar contraseña
+            this.uiService.mostrar_toast('La contraseña ha caducado o es su primer acceso');
+            let navigationExtras: NavigationExtras = {
+              queryParams: {
+                id: resp['id']
+              }
+            };
+            this.navCtrl.navigateForward(['/cambia-pass'], navigationExtras);
           }
         },
         (error: any) => {
           this.token = null;
           this.role = null;
           this.borrarStorage();
+          this.uiService.mostrar_toast(error.error.err.message);
           resolve(false);
         }
       );
+    });
+  }
+
+  cambiaContraseña( idUsr: string,  passAnt: string, password: string ) {
+
+    const url = URL + '/usuario/cambiar-passwd/' + idUsr;
+
+    let pass = { passAnt, password };
+    console.log(pass);
+    return new Promise(resolve => {
+      this.http.put(url, pass )
+                .subscribe( (resp: any) => {
+                  console.log(resp['error'].message);
+                  if( resp['ok']) {
+                    this.uiService.mostrar_toast('¡Contraseña cambiada con éxito! esta contraseña caducará a los 6 meses');
+                    this.navCtrl.navigateForward('/login');
+                    resolve(true);
+                  }
+                },
+                (error: any) => {
+                  console.log(error.error.message);
+                  this.uiService.mostrar_toast(error.error.message);
+                  resolve(false);
+                }
+                );
     });
   }
 
@@ -86,25 +124,11 @@ export class UsuarioService {
   borrarStorage() {
     this.storage.remove('usuario');
     this.storage.remove('token');
-    /* if (this.platform.is('cordova')) {
-                  this.storage.remove('usuario');
-                  this.storage.remove('token');
-                } else {
-                  localStorage.removeItem('usuario');
-                  localStorage.removeItem('token');
-                } */
   }
 
   guardarStorage() {
     this.storage.set('usuario', this.usuario);
     this.storage.set('token', this.token);
-    /*  if (this.platform.is('cordova')) {
-                  this.storage.set('usuario', this.usuario);
-                  this.storage.set('token', this.token);
-                } else {
-                  localStorage.setItem('usuario', JSON.stringify (this.usuario));
-                  localStorage.setItem('token', this.token);
-                } */
   }
 
   async cargarStorage() {

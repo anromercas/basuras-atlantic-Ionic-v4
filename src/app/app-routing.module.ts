@@ -22,6 +22,7 @@ const routes: Routes = [
   { path: 'ejemplos', loadChildren: './pages/ejemplos/ejemplos.module#EjemplosPageModule' },
   { path: 'nueva-basura', loadChildren: './pages/nueva-basura/nueva-basura.module#NuevaBasuraPageModule' },
   { path: 'zona', loadChildren: './pages/zona/zona.module#ZonaPageModule', canLoad: [ UsuarioGuard ] },
+  { path: 'cambia-pass', loadChildren: './pages/cambia-pass/cambia-pass.module#CambiaPassPageModule' },
 ];
 
 @NgModule({
