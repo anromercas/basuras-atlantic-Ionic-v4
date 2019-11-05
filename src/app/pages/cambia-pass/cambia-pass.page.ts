@@ -50,7 +50,11 @@ export class CambiaPassPage implements OnInit {
 
     console.log(this.passUser);
 
-    this.usuarioService.cambiaContraseña(this.id, this.passUser.anterior, this.passUser.nuevo);
+    const cambio = this.usuarioService.cambiaContraseña(this.id, this.passUser.anterior, this.passUser.nuevo);
+
+    if ( cambio ) {
+      this.router.navigate(['login']);
+    }
 
   }
 

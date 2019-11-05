@@ -98,7 +98,7 @@ export class BasuraService {
     return this.http.put( url, basura, {headers} );
   }
 
-  // Lista todas las Basuras
+  // Lista todas las Basuras de una zona
   listarBasuras() {
 
     const headers = new HttpHeaders({
@@ -107,16 +107,25 @@ export class BasuraService {
     const url = URL + '/basura';
     return this.http.get( url, {headers} );
   }
+  // Lista todas las Basuras de una zona
+  listarBasurasDeZona( zona: string ) {
+
+    const headers = new HttpHeaders({
+      'token': this.usuarioService.token
+    });
+    const url = URL + '/basuraPorZona?zona=' + zona;
+    return this.http.get( url, {headers} );
+  }
 
   // Borra una basura
   borrarBasura(id: string) {
     const headers = new HttpHeaders({
       'token': this.usuarioService.token
     });
-    const url = URL + '/basura/' + id; 
+    const url = URL + '/basura/' + id;
     return this.http.delete( url, {headers})
                     .pipe(
-                      map( (resp: any) =>{
+                      map( (resp: any) => {
                           return resp;
                       })
                     );

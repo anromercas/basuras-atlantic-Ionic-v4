@@ -9,12 +9,15 @@
         <img [src]="zona.imagen">
 
     <ion-list>
-        <ion-item *ngFor="let basura of basurasDeZona" [color]="basura.color">
+        <ion-item *ngFor="let basura of basuras" [color]="basura.color" >
             <ion-thumbnail slot="start" (click)="calificar(basura)" class="thumbnailAvatar">
                 <!--    <img [src]="basura.imgContenedor | imagenDetalle:'imgcontenedor'"> -->
                 <img src="/assets/icon/contenedores/{{ basura.imgContenedor }}">
             </ion-thumbnail>
-            <ion-text (click)="calificar(basura)" class="ion-text-wrap">
+            <ion-text (click)="calificar(basura)" class="ion-text-wrap" *ngIf="basura.habilitado !== false">
+                <h5>{{ basura.numeroContenedor }}. {{ basura.nombre }} <small>( {{ basura.codigoContenedor }} )</small> </h5>
+            </ion-text>
+            <ion-text (click)="calificacionRealizada()" class="ion-text-wrap" *ngIf="basura.habilitado === false" >
                 <h5>{{ basura.numeroContenedor }}. {{ basura.nombre }} <small>( {{ basura.codigoContenedor }} )</small> </h5>
             </ion-text>
             <ion-icon color="danger" name="trash" *ngIf="admin" (click)="borrarBasura(basura._id)" slot="end"></ion-icon>

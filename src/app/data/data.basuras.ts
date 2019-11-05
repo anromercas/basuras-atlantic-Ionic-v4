@@ -102,6 +102,12 @@ export const BASURAS = [
     siglas: "CEMC"
   },
   {
+    nombre: "Contenedor Envases Metálicos",
+    imgContenedor: "contenedor-envases-metalicos.png",
+    seleccionado: false,
+    siglas: "CEM"
+  },
+  {
     nombre: "Papeleras selectivas",
     imgContenedor: "papeleras-selectivas.png",
     seleccionado: false,

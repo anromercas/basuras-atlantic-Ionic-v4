@@ -1,17 +1,17 @@
 import { UiService } from './ui.service';
-import { Injectable } from "@angular/core";
-import { Usuario } from "../interfaces/usuario.interface";
-import { Platform, ToastController, NavController } from "@ionic/angular";
-import { environment } from "src/environments/environment";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Storage } from "@ionic/storage";
-import { map } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { Usuario } from '../interfaces/usuario.interface';
+import { Platform, ToastController, NavController } from '@ionic/angular';
+import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Storage } from '@ionic/storage';
+import { map } from 'rxjs/operators';
 import { NavigationExtras } from '@angular/router';
 
 const URL = environment.url;
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class UsuarioService {
   clave: string;
@@ -36,7 +36,7 @@ export class UsuarioService {
     const usr = { email, password };
 
     const headers = new HttpHeaders({
-      "x-otp": xotp
+      'x-otp': xotp
     });
 
     return this.http.post(`${URL}/login`, usr, { headers }).subscribe(data => {
@@ -45,7 +45,7 @@ export class UsuarioService {
   }
 
   login(email: string, password: string) {
-    const url = URL + "/loginApp";
+    const url = URL + '/loginApp';
     const usr = {
       email,
       password
@@ -54,7 +54,7 @@ export class UsuarioService {
     return new Promise(resolve => {
       this.http.post(url, usr).subscribe(
         (resp: any) => {
-          if (resp["ok"]) {
+          if (resp['ok']) {
             console.log(resp.usuario);
             this.usuario = resp.usuario;
             this.role = resp.usuario.role;
@@ -71,6 +71,7 @@ export class UsuarioService {
               }
             };
             this.navCtrl.navigateForward(['/cambia-pass'], navigationExtras);
+            resolve('nueva-contraseña');
           }
         },
         (error: any) => {
@@ -96,7 +97,7 @@ export class UsuarioService {
                   console.log(resp['error'].message);
                   if( resp['ok']) {
                     this.uiService.mostrar_toast('¡Contraseña cambiada con éxito! esta contraseña caducará a los 6 meses');
-                    this.navCtrl.navigateForward('/login');
+                    // this.navCtrl.navigateRoot('/login');
                     resolve(true);
                   }
                 },

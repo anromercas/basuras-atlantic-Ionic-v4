@@ -15,8 +15,8 @@ import { NgForm } from '@angular/forms';
 export class LoginPage implements OnInit {
 
   loginUser = {
-    email: 'nuria@mail.com',
-    password: '1234'
+    email: '',
+    password: ''
   };
 
   intentos = 0;
@@ -36,7 +36,13 @@ export class LoginPage implements OnInit {
     }
     const valido = await this.usuarioService.login( this.loginUser.email, this.loginUser.password );
 
-    if (valido) {
+    console.log(valido);
+
+    if ( valido === 'nueva-contraseña') {
+      console.log('cambio de pass');
+      this.loginUser.password = '';
+
+    } else if (valido) {
       console.log(this.intentos);
       // navegar al HomePage
       this.navCtrl.navigateRoot('home', { animated: true } );

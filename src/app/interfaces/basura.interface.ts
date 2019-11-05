@@ -1,3 +1,5 @@
+import { Usuario } from './usuario.interface';
+
 export interface Basura {
     nombre: string;
     zona: string;
@@ -12,6 +14,7 @@ export interface Basura {
     imgDetalle?: string;
     estado?: string;
     _id?: string;
-    usuario?: string;
+    usuario?: Usuario;
     color?: string;
+    habilitado?: boolean;
 }

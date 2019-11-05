@@ -14,7 +14,7 @@ export class UiService {
     const alert = await this.alertCtrl.create({
       header: titulo,
       subHeader: subtitulo,
-      buttons: ["OK"]
+      buttons: ['OK']
     });
     await alert.present();
   }

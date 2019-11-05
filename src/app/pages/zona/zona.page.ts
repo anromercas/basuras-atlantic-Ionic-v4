@@ -18,6 +18,7 @@ export class ZonaPage implements OnInit {
   basurasDeZona: Basura[] = [];
   historicoBasuras: Basura[] = [];
   admin = false;
+  init = false;
   subs;
 
   constructor(private usuarioService: UsuarioService,
@@ -25,7 +26,6 @@ export class ZonaPage implements OnInit {
               private uiService: UiService,
               private router: Router,
               private activeRoute: ActivatedRoute) {
-              //  this.zona = this.navParams.get("zona");
 
               this.subs = this.activeRoute.queryParams.subscribe( params => {
                 let data = this.router.getCurrentNavigation().extras.queryParams.zona;
@@ -44,16 +44,23 @@ export class ZonaPage implements OnInit {
   ngOnInit() {
 
     this.subs.unsubscribe();
-
-    this.basuraService.listarBasuras()
+    this.basuraService.listarBasurasDeZona( this.zona.nombre + ' - ' + this.zona.area )
     .subscribe((basuras: any) => {
       this.basuras = basuras.basuras;
+      this.init = true;
+      console.log('ngOnInit');
+      console.log(this.basuras);
       this.mostrarBasuras();
     }/* , (err) => {
       console.log(err);
       this.uiService.alertaInformativa('Sesión Caducada', 'La sesión ha caducado, debe iniciar sesión de nuevo.');
       this.usuarioService.logout();
     } */);
+  }
+
+  ionViewWillEnter() {
+    this.mostrarBasuras();
+    console.log('Mostrando basuras');
   }
 
   irBasura( basura: Basura ) {
@@ -88,18 +95,19 @@ export class ZonaPage implements OnInit {
   mostrarBasuras() {
 
     this.basuras.forEach( basura => {
-      if ( basura.zona === this.zona.nombre + ' - ' + this.zona.area ) {
         this.basuraService.comprobarFechaRealizado(basura._id)
                           .subscribe( (res: any) => {
-                          //  console.log(res);
+                          //  console.log(basura);
                             if (res.fechaValida === true) {
-                              basura.color = 'success';
-                              console.log(basura.color);
+                              basura.color = 'medium';
+                              basura.habilitado = false;
                             }
-                            this.basurasDeZona.push( basura );
                           });
-      }
     });
+  }
+
+  calificacionRealizada() {
+    this.uiService.mostrar_toast('Este contenedor ya se ha calificado en esta semana');
   }
 
   cerrar_sesion() {

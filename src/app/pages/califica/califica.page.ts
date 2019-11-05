@@ -169,7 +169,7 @@ export class CalificaPage implements OnInit {
       fecha: new Date().toISOString(),
       residuo: this.residuo,
       imgContenedor: this.basura.imgContenedor,
-      estado: this.estado
+      estado: this.estado,
     };
 
     console.log('BasuraProv ' + basuraProv);
@@ -208,7 +208,8 @@ export class CalificaPage implements OnInit {
       fecha: new Date().toISOString(),
       residuo: this.residuo,
       imgContenedor: this.basura.imgContenedor,
-      estado: this.estado
+      estado: this.estado,
+      usuario: this.usuarioService.usuario
     };
     // Actualiza la basura
     this.basuraService
@@ -258,9 +259,23 @@ export class CalificaPage implements OnInit {
     if (opcion.seleccionado) {
       this.estado += opcion.nombre + ',';
       opcion.color = 'secondary';
+      if(opcion.nombre === 'Bueno') {
+        this.masOpciones.forEach( opc => {
+          if( opc.nombre !== 'Bueno' ) {
+            opc.deshabilitado = true;
+          }
+        });
+      }
     } else {
       this.estado = this.estado.replace(opcion.nombre + ',', '');
       opcion.color = '';
+      if(opcion.nombre === 'Bueno') {
+        this.masOpciones.forEach( opc => {
+          if( opc.nombre !== 'Bueno' ) {
+            opc.deshabilitado = false;
+          }
+        });
+      }
     }
   }
 
@@ -269,7 +284,7 @@ export class CalificaPage implements OnInit {
 
     this.calificacion = 5;
     this.calificaciones.forEach(calificacion => {
-      if (calificacion.puntos == 5) {
+      if (calificacion.puntos === 5) {
         calificacion.seleccionado = true;
         calificacion.color = 'secondary';
       } else {
