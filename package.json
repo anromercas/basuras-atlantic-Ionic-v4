@@ -1,7 +1,7 @@
 {
   "name": "basuras-express-Ionic-v4",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
+  "version": "1.0.0",
+  "author": "Nuria Romero Castillo",
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
