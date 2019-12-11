@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes, CanActivate } from '@angular/router';
 import { UsuarioGuard } from './guards/usuario.guard';
-import { ActivateUserGuard } from './guards/activate-user.guard';
 
 const routes: Routes = [
   {
