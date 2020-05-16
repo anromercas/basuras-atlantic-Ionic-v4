@@ -1,7 +1,7 @@
 import { UiService } from './ui.service';
 import { Injectable } from '@angular/core';
 import { Usuario } from '../interfaces/usuario.interface';
-import { Platform, ToastController, NavController } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
@@ -21,28 +21,10 @@ export class UsuarioService {
 
   constructor(
     private http: HttpClient,
-    private platform: Platform,
     private storage: Storage,
     private navCtrl: NavController,
-    private uiService: UiService,
-    private usuarioService: UsuarioService,
+    private uiService: UiService
   ) {}
-
-  // =============================================================
-  // Codigo provisional para probar el x-otp de la API de basuras
-  // =============================================================
-
-  loginOtp(email: string, password: string, xotp: string) {
-    const usr = { email, password };
-
-    const headers = new HttpHeaders({
-      'x-otp': xotp
-    });
-
-    return this.http.post(`${URL}/login`, usr, { headers }).subscribe(data => {
-      console.log(data);
-    });
-  }
 
   login(email: string, password: string) {
     const url = URL + '/loginApp';
@@ -62,7 +44,7 @@ export class UsuarioService {
             this.guardarStorage();
             resolve(true);
           } else if( resp['ok'] === false) {
-            console.log(resp['err'].message);
+          //  console.log(resp['err'].message);
             // redirijo a la pagina de cambiar contraseña
             this.uiService.mostrar_toast('La contraseña ha caducado o es su primer acceso');
             let navigationExtras: NavigationExtras = {
@@ -78,7 +60,11 @@ export class UsuarioService {
           this.token = null;
           this.role = null;
           this.borrarStorage();
-          this.uiService.mostrar_toast(error.error.err.message);
+          if( error.error.err.message ) {
+            this.uiService.mostrar_toast(error.error.err.message);
+          } else {
+            this.uiService.mostrar_toast('Compruebe su conexión a internet');
+          }
           resolve(false);
         }
       );

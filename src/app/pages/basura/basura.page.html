@@ -25,7 +25,7 @@
   <ion-list>
       
       <h2>Histórico</h2>
-        <ion-card *ngIf="!basura.img" color="warning">
+        <ion-card *ngIf="basuras.length === 0" color="warning">
           
             <ion-card-content>
               No hay contenido

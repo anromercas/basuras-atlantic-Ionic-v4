@@ -12,6 +12,9 @@ import { masOpciones } from 'src/app/data/data.masopciones';
 import { RESIDUOS } from 'src/app/data/data.residuos';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { NetworkService } from 'src/app/services/network.service';
+import { OfflineManagerService } from 'src/app/services/offline-manager.service';
+
 
 declare var window;
 
@@ -43,20 +46,22 @@ export class CalificaPage implements OnInit {
   masOpciones: MasOpc[] = [];
   residuos: Residuos[] = [];
 
+  isConnected = false;
+
   constructor(
     public navCtrl: NavController,
     private router: Router,
     private camera: Camera,
     public basuraService: BasuraService,
-    public uiProv: UiService,
+    public uiService: UiService,
     public usuarioService: UsuarioService,
     private activeRoute: ActivatedRoute,
+    private networkService: NetworkService,
+    private offlineManager: OfflineManagerService
   ) {
     this.calificaciones = CALIFICACIONES;
-    this.masOpciones = masOpciones;
-    this.residuos = RESIDUOS;
-
-  //  this.basura = this.navParams.get('basura');
+    this.masOpciones = masOpciones.slice();
+    this.residuos = RESIDUOS.slice();
 
     this.activeRoute.queryParams.subscribe( params => {
       const data = this.router.getCurrentNavigation().extras.queryParams.basura;
@@ -95,6 +100,18 @@ export class CalificaPage implements OnInit {
 
   ngOnInit() {
 
+    this.networkService.getNetworkStatus().subscribe( (connected: boolean) => {
+      this.isConnected = connected;
+      if (!this.isConnected) {
+        console.log('Por favor enciende tu conexión a Internet');
+        console.log(this.isConnected);
+      //  this.uiService.mostrar_toast_up('Comprueba tu conexión a internet antes de iniciar sesión');
+      } else {
+        console.log(this.isConnected);
+      //  this.uiService.mostrar_toast_up('conexión a internet correcta');
+      }
+    });
+
     this.mostrarResiduos();
 
     this.basuraService.listarBasuras().subscribe(
@@ -105,7 +122,7 @@ export class CalificaPage implements OnInit {
             console.log('Token renovado');
           } else {
             console.log('Token no renovado');
-            this.uiProv.alertaInformativa(
+            this.uiService.alertaInformativa(
               'Sesión Caducada',
               'La sesión ha caducado, debe iniciar sesión de nuevo.'
             );
@@ -123,7 +140,8 @@ export class CalificaPage implements OnInit {
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true,
-      sourceType: this.camera.PictureSourceType.CAMERA
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      saveToPhotoAlbum: true
     };
 
     this.camera.getPicture(options).then(
@@ -131,25 +149,49 @@ export class CalificaPage implements OnInit {
         if (tipo === 'img') {
           //  this.imagenPreview = 'data:image/jpg;base64,' + imageData;
           const img = window.Ionic.WebView.convertFileSrc(imageData);
-          this.imagenPreview = img;
           this.imagen64 = imageData;
-          this.imagenNueva = true;
-          this.basuraService.subirImagen(
-            this.imagen64,
-            'basuras',
-            this.basura._id
-          );
-          this.uiProv.mostrar_toast('Imagen subida');
+          if ( this.isConnected === false ) {
+            this.basuraService.imgStorage(this.imagen64, 'basuras', this.basura._id);
+            this.imagenPreview = img;
+            this.imagenNueva = true;
+          } else {
+
+            this.basuraService.subirImagen(
+              this.imagen64,
+              'basuras',
+              this.basura._id
+            ).then( data => {
+              this.imagenPreview = img;
+              this.imagenNueva = true;
+              this.uiService.mostrar_toast('Imagen subida');
+            }).catch( err => {
+              console.log('Error en carga', err);
+            //  this.uiService.alertaInformativa('Imagen no subida', 'compruebe su conexión a internet e intentelo de nuevo');
+              this.basuraService.imgStorage(this.imagen64, 'basuras', this.basura._id);
+              this.imagenPreview = img;
+              this.imagenNueva = true;
+            });
+          }
         } else {
           const img = window.Ionic.WebView.convertFileSrc(imageData);
-          this.imagenPreviewDetalle = img;
           this.imagen64Detalle = imageData;
-          this.basuraService.subirImagen(
-            imageData,
-            'imgdetalle',
-            this.basura._id
-          );
-          this.uiProv.mostrar_toast('Imagen subida');
+
+          if ( this.isConnected === false ) {
+            this.basuraService.imgStorage(this.imagen64Detalle, 'imgdetalle', this.basura._id);
+          } else {
+
+            this.basuraService.subirImagen(
+              this.imagen64Detalle,
+              'imgdetalle',
+              this.basura._id
+              ).then( data => {
+                this.imagenPreviewDetalle = img;
+                this.uiService.mostrar_toast('Imagen subida');
+            }).catch( err => {
+              console.log('Error en carga', err);
+              this.uiService.alertaInformativa('Imagen no subida', 'compruebe su conexión a internet e intentelo de nuevo');
+            });
+          }
         }
       },
       err => {
@@ -179,14 +221,14 @@ export class CalificaPage implements OnInit {
   guardar() {
     if (this.calificacion < 5 && !this.residuo) {
       console.log('Hay que seleccionar residuos');
-      this.uiProv.alertaInformativa(
+      this.uiService.alertaInformativa(
         'Error',
         'Debe seleccionar los resíduos que no deberían de estar en este contenedor'
       );
       return;
     } else if (this.estado === '') {
       console.log('el estado es obligatorio');
-      this.uiProv.alertaInformativa(
+      this.uiService.alertaInformativa(
         'Error',
         'El estado del contenedor es obligatorio'
       );
@@ -211,25 +253,37 @@ export class CalificaPage implements OnInit {
       estado: this.estado,
       usuario: this.usuarioService.usuario
     };
-    // Actualiza la basura
-    this.basuraService
-      .actualizarBasura(this.basura._id, basuraProv)
-      .subscribe((res: any) => {
-        console.log('Basura añadida', res.basura);
-        this.basura = res.basura;
+    if ( this.isConnected === false ){
+    //  this.uiService.mostrar_toast_center('La calificación no ha sido guardada, compruebe su conexión a internet');
+      this.basuraService.actualizarBasura(this.basura._id, basuraProv, false);
+    } else {
 
-        this.basuraService
-          .crearHistorico(res.basura)
-          // Crea un registro en historico
-          .subscribe(res => console.log('Historico añadido', res));
+      // Actualiza la basura
+      this.basuraService
+        .actualizarBasura(this.basura._id, basuraProv, true)
+        .subscribe((res: any) => {
+          console.log('Basura añadida', res.basura);
+          this.basura = res.basura;
+          if (this.isConnected === false ) {
+            this.basuraService.crearHistorico(res.basura, false);
+          } else {
 
-        this.uiProv.alertaConTiempo(
-          'Guardado!',
-          'La calificación se ha guardado con éxito!',
-          1500
-        );
-        this.navCtrl.pop();
-      });
+            this.basuraService
+              .crearHistorico(res.basura, true)
+              // Crea un registro en historico
+              .subscribe(res => console.log('Historico añadido', res));
+
+            this.uiService.alertaConTiempo(
+              'Guardado!',
+              'La calificación se ha guardado con éxito!',
+              1500
+            );
+          }
+
+        });
+      }
+    this.reiniciar();
+    this.navCtrl.pop();
   }
 
   calificar(calificacion: Calificacion) {
@@ -244,10 +298,10 @@ export class CalificaPage implements OnInit {
     calificacion.seleccionado = true;
 
     if (calificacion.puntos < 5) {
-      this.uiProv.alertaConTiempo(
+      this.uiService.alertaConTiempo(
         'Hay más opciones',
         'La calificación es menor a 5, debe seleccionar un Resíduo',
-        3000
+        2500
       );
       this.calificacion = calificacion.puntos;
     } else {
@@ -261,8 +315,12 @@ export class CalificaPage implements OnInit {
       opcion.color = 'secondary';
       if(opcion.nombre === 'Bueno') {
         this.masOpciones.forEach( opc => {
-          if( opc.nombre !== 'Bueno' ) {
+          if ( opc.nombre !== 'Bueno' ) {
             opc.deshabilitado = true;
+            opc.seleccionado = false;
+            opc.color =  '';
+            this.estado = '';
+            this.estado += opcion.nombre + ',';
           }
         });
       }
@@ -296,6 +354,7 @@ export class CalificaPage implements OnInit {
     this.masOpciones.forEach(opc => {
       opc.color = '';
       opc.seleccionado = false;
+      opc.deshabilitado = false;
     });
     this.estado = '';
 

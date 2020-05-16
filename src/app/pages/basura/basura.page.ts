@@ -77,7 +77,7 @@ export class BasuraPage implements OnInit {
         this.limite
       )
       .subscribe((resp: any) => {
-        console.log(resp);
+        console.log(resp.historicos);
         this.basuras.push(...resp.historicos);
         this.desde += this.limite;
         if (event) {

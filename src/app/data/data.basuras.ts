@@ -1,177 +1,183 @@
 export const BASURAS = [
   {
-    nombre: "Contenedor EPIs",
-    imgContenedor: "contenedor-epis.png",
+    nombre: 'Contenedor EPIs',
+    imgContenedor: 'contenedor-epis.png',
     seleccionado: true,
-    siglas: "CEPIS"
+    siglas: 'CEPIS'
   },
   {
-    nombre: "Contenedor Papel y Cartón",
-    imgContenedor: "contenedor-papel-y-carton.png",
+    nombre: 'Contenedor Papel y Cartón',
+    imgContenedor: 'contenedor-papel-y-carton.png',
     seleccionado: false,
-    siglas: "CPC"
+    siglas: 'CPC'
   },
   {
-    nombre: "Contenedor RSU",
-    imgContenedor: "contenedor-rsu.png",
+    nombre: 'Contenedor RSU',
+    imgContenedor: 'contenedor-rsu.png',
     seleccionado: false,
-    siglas: "CRSU"
+    siglas: 'CRSU'
   },
   {
-    nombre: "Contenedor de Plástico/envases NO Contaminados",
-    imgContenedor: "contenedor-plastico-envases-no-contaminados.png",
+    nombre: 'Contenedor de Plástico/envases NO Contaminados',
+    imgContenedor: 'contenedor-plastico-envases-no-contaminados.png',
     seleccionado: false,
-    siglas: "CPENC"
+    siglas: 'CPENC'
   },
   {
-    nombre: "Contenedor de Plástico/envases Contaminados",
-    imgContenedor: "contenedor-plastico-envases-contaminados.png",
+    nombre: 'Contenedor de Plástico/envases Contaminados',
+    imgContenedor: 'contenedor-plastico-envases-contaminados.png',
     seleccionado: false,
-    siglas: "CPEC"
+    siglas: 'CPEC'
   },
   {
-    nombre: "Arcón para RSU",
-    imgContenedor: "arcon-para-rsu.png",
+    nombre: 'Arcón para RSU',
+    imgContenedor: 'arcon-para-rsu.png',
     seleccionado: false,
-    siglas: "ARSU"
+    siglas: 'ARSU'
   },
   {
-    nombre: "Bidón Elementos Filtrantes Absorbente Contaminado",
-    imgContenedor: "bidon-elementos-filtrantes-absorbente-contaminado.png",
+    nombre: 'Bidón Elementos Filtrantes Absorbente Contaminado',
+    imgContenedor: 'bidon-elementos-filtrantes-absorbente-contaminado.png',
     seleccionado: false,
-    siglas: "BEFAC"
+    siglas: 'BEFAC'
   },
   {
-    nombre: "Contenedor Cajas Madera",
-    imgContenedor: "contenedor-cajas-madera.png",
+    nombre: 'Contenedor Cajas Madera',
+    imgContenedor: 'contenedor-cajas-madera.png',
     seleccionado: false,
-    siglas: "CCM"
+    siglas: 'CCM'
   },
   {
-    nombre: "Contenedor Chatarra",
-    imgContenedor: "contenedor-chatarra.png",
+    nombre: 'Contenedor Chatarra',
+    imgContenedor: 'contenedor-chatarra.png',
     seleccionado: false,
-    siglas: "CC"
+    siglas: 'CC'
   },
   {
-    nombre: "Contenedor envases contaminados",
-    imgContenedor: "contenedor-envases-contaminados.png",
+    nombre: 'Contenedor envases contaminados',
+    imgContenedor: 'contenedor-envases-contaminados.png',
     seleccionado: false,
-    siglas: "CEC"
+    siglas: 'CEC'
   },
   {
-    nombre: "Contenedor plástico contaminados",
-    imgContenedor: "contenedor-plastico-contaminado.png",
+    nombre: 'Contenedor plástico contaminados',
+    imgContenedor: 'contenedor-plastico-contaminado.png',
     seleccionado: false,
-    siglas: "CPC"
+    siglas: 'CPC'
   },
   {
-    nombre: "Contenedor RAEE",
-    imgContenedor: "contenedor-RAEE.png",
+    nombre: 'Contenedor RAEE',
+    imgContenedor: 'contenedor-RAEE.png',
     seleccionado: false,
-    siglas: "CRAEE"
+    siglas: 'CRAEE'
   },
   {
-    nombre: "Contenedor EPIs Contaminados",
-    imgContenedor: "contenedor-epis-contaminados.png",
+    nombre: 'Contenedor EPIs Contaminados',
+    imgContenedor: 'contenedor-epis-contaminados.png',
     seleccionado: false,
-    siglas: "CEPISC"
+    siglas: 'CEPISC'
   },
   {
-    nombre: "Contenedor Toner",
-    imgContenedor: "contenedor-toner.png",
+    nombre: 'Contenedor Toner',
+    imgContenedor: 'contenedor-toner.png',
     seleccionado: false,
-    siglas: "CTO"
+    siglas: 'CTO'
   },
   {
-    nombre: "Contenedor Trapos",
-    imgContenedor: "contenedor-trapos.png",
+    nombre: 'Contenedor Trapos',
+    imgContenedor: 'contenedor-trapos.png',
     seleccionado: false,
-    siglas: "CTRA"
+    siglas: 'CTRA'
   },
   {
-    nombre: "Contenedor Tubos Fluorescentes",
-    imgContenedor: "contenedor-tubos-fluoresc.png",
+    nombre: 'Contenedor Tubos Fluorescentes',
+    imgContenedor: 'contenedor-tubos-fluoresc.png',
     seleccionado: false,
-    siglas: "CTF"
+    siglas: 'CTF'
   },
   {
-    nombre: "Contenedor Envases Metálicos Contaminados",
-    imgContenedor: "contenedor-envases-metalicos-contaminados.png",
+    nombre: 'Contenedor Envases Metálicos Contaminados',
+    imgContenedor: 'contenedor-envases-metalicos-contaminados.png',
     seleccionado: false,
-    siglas: "CEMC"
+    siglas: 'CEMC'
   },
   {
-    nombre: "Contenedor Envases Metálicos",
-    imgContenedor: "contenedor-envases-metalicos.png",
+    nombre: 'Contenedor Envases Metálicos',
+    imgContenedor: 'contenedor-envases-metalicos.png',
     seleccionado: false,
-    siglas: "CEM"
+    siglas: 'CEM'
   },
   {
-    nombre: "Papeleras selectivas",
-    imgContenedor: "papeleras-selectivas.png",
+    nombre: 'Papeleras selectivas',
+    imgContenedor: 'papeleras-selectivas.png',
     seleccionado: false,
-    siglas: "PS"
+    siglas: 'PS'
   },
   {
-    nombre: "Jaula RAEE",
-    imgContenedor: "jaula-RAEE.png",
+    nombre: 'Jaula RAEE',
+    imgContenedor: 'jaula-RAEE.png',
     seleccionado: false,
-    siglas: "JRAEE"
+    siglas: 'JRAEE'
   },
   {
-    nombre: "GRG Refractario Peligroso",
-    imgContenedor: "GRG-Refractario-peligroso.png",
+    nombre: 'GRG Refractario Peligroso',
+    imgContenedor: 'GRG-Refractario-peligroso.png',
     seleccionado: false,
-    siglas: "GRGRP"
+    siglas: 'GRGRP'
   },
   {
-    nombre: "Cuba de Refractario NP",
-    imgContenedor: "cuba-refractario-NP.png",
+    nombre: 'Cuba de Refractario NP',
+    imgContenedor: 'cuba-refractario-NP.png',
     seleccionado: false,
-    siglas: "CURNP"
+    siglas: 'CURNP'
   },
   {
-    nombre: "Cuba Chatarra",
-    imgContenedor: "cuba-chatarra.png",
+    nombre: 'Cuba Chatarra',
+    imgContenedor: 'cuba-chatarra.png',
     seleccionado: false,
-    siglas: "CUCHA"
+    siglas: 'CUCHA'
   },
   {
-    nombre: "Cuba Chatarra Cu y/o Fe",
-    imgContenedor: "cuba-chatarra-cu-y-o-fe.png",
+    nombre: 'Cuba Chatarra Cu y/o Fe',
+    imgContenedor: 'cuba-chatarra-cu-y-o-fe.png',
     seleccionado: false,
-    siglas: "CUCHACUFE"
+    siglas: 'CUCHACUFE'
   },
   {
-    nombre: "Cuba de Calorifugado",
-    imgContenedor: "cuba-de-calorifugado.png",
+    nombre: 'Cuba de Calorifugado',
+    imgContenedor: 'cuba-de-calorifugado.png',
     seleccionado: false,
-    siglas: "CUC"
+    siglas: 'CUC'
   },
   {
-    nombre: "Cuba Madera",
-    imgContenedor: "cuba-madera.png",
+    nombre: 'Cuba Madera',
+    imgContenedor: 'cuba-madera.png',
     seleccionado: false,
-    siglas: "CUMA"
+    siglas: 'CUMA'
   },
   {
-    nombre: "Cuba Plasticos Limpios",
-    imgContenedor: "cuba-plasticos-limpios.png",
+    nombre: 'Cuba Plasticos Limpios',
+    imgContenedor: 'cuba-plasticos-limpios.png',
     seleccionado: false,
-    siglas: "CUPL"
+    siglas: 'CUPL'
   },
   {
-    nombre: "Cuba Sacas Contaminadas",
-    imgContenedor: "cuba-sacas-contaminadas.png",
+    nombre: 'Cuba Sacas Contaminadas',
+    imgContenedor: 'cuba-sacas-contaminadas.png',
     seleccionado: false,
-    siglas: "CUSC"
+    siglas: 'CUSC'
   },
   {
-    nombre: "GRG Vídrio Contaminado",
-    imgContenedor: "contenedor-chatarra.png",
+    nombre: 'GRG Vídrio Contaminado',
+    imgContenedor: 'contenedor-chatarra.png',
     seleccionado: false,
-    siglas: "GRGVC"
+    siglas: 'GRGVC'
   },
-  
+  {
+    nombre: 'GRG Envases/plásticos Contaminados',
+    imgContenedor: 'contenedor-plastico-envases-contaminados.png',
+    seleccionado: false,
+    siglas: 'GRGEPC'
+  },
+
 ];

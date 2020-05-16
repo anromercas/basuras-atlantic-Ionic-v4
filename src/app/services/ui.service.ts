@@ -38,4 +38,22 @@ export class UiService {
     });
     toast.present();
   }
+
+  async mostrar_toast_up(mensaje: string) {
+    const toast = await this.toastCtrl.create({
+      message: mensaje,
+      position: 'top',
+      duration: 3000
+    });
+    toast.present();
+  }
+
+  async mostrar_toast_center(mensaje: string) {
+    const toast = await this.toastCtrl.create({
+      message: mensaje,
+      position: 'middle',
+      duration: 3000
+    });
+    toast.present();
+  }
 }

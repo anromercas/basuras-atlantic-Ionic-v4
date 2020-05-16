@@ -1,11 +1,15 @@
+import { Basura } from './../interfaces/basura.interface';
 import { Injectable } from '@angular/core';
-import { Basura } from '../interfaces/basura.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { UsuarioService } from './usuario.service';
 import { environment } from 'src/environments/environment';
 import { ToastController } from '@ionic/angular';
 import { map } from 'rxjs/operators';
+import { UiService } from './ui.service';
+import { from, Observable } from 'rxjs';
+import { OfflineManagerService } from './offline-manager.service';
+import { NetworkService } from './network.service';
 
 const URL = environment.url;
 
@@ -18,7 +22,9 @@ export class BasuraService {
   constructor(private http: HttpClient,
               private usuarioService: UsuarioService,
               private toastCtrl: ToastController,
-              private fileTransfer: FileTransfer
+              private fileTransfer: FileTransfer,
+              public uiProv: UiService,
+              private offlineManager: OfflineManagerService
               ) {}
 
   // Crea una basura
@@ -54,6 +60,20 @@ export class BasuraService {
                     ); */
   }
 
+  imgStorage(img: string, tipo: string = 'basuras', id: string) {
+    const options: FileUploadOptions = {
+      fileKey: 'img',
+      httpMethod: 'put',
+      mimeType: 'image/jpeg',
+      headers: {
+        'token': this.usuarioService.token
+      }
+    };
+    const url = `${URL}/upload/${tipo}/${id}`;
+    return from(this.offlineManager.storeImg(url, 'PUT', options, img, tipo, id));
+
+  }
+
   subirImagen(img: string, tipo: string = 'basuras', id: string) {
 
     const options: FileUploadOptions = {
@@ -66,13 +86,16 @@ export class BasuraService {
     };
 
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
+    const url = `${URL}/upload/${tipo}/${id}`;
 
-    fileTransfer.upload( img, `${URL}/upload/${tipo}/${id}`, options )
-                .then( data => {
+    return fileTransfer.upload( img, url, options );
+
+                /* .then( data => {
                   console.log(data);
                 }).catch( err => {
                   console.log('Error en carga', err);
-                });
+                  this.uiProv.alertaInformativa('Imagen no subida', 'compruebe su conexión a internet e intentelo de nuevo');
+                }); */
 
   }
 
@@ -87,7 +110,7 @@ export class BasuraService {
   }
 
   // Actualiza una Basura
-  actualizarBasura( id: string, basura: Basura ) {
+  actualizarBasura( id: string, basura: Basura, connected: boolean ) {
 
     console.log('Actualiza basura provider ', basura);
 
@@ -95,7 +118,13 @@ export class BasuraService {
       'token': this.usuarioService.token
     });
     const url = URL + '/basura/' + id;
-    return this.http.put( url, basura, {headers} );
+
+    if (!connected) {
+      return from(this.offlineManager.storeRequest(url, 'PUT', basura));
+    } else {
+      return this.http.put( url, basura, {headers} );
+    }
+
   }
 
   // Lista todas las Basuras de una zona
@@ -132,18 +161,24 @@ export class BasuraService {
   }
 
   // Crea un registro de historico de una basura
-  crearHistorico( basura: Basura ) {
+  crearHistorico( basura: Basura, connected: boolean ) {
     const headers = new HttpHeaders({
       'token': this.usuarioService.token
     });
-    const url = URL + '/historico'; 
-    return this.http.post( url, basura, {headers})
-                    .pipe(
-                      map( (resp: any) =>{
-                          console.log(resp);
-                          return resp;
-                      })
-                    );
+    const url = URL + '/historico';
+
+    if (!connected) {
+      return from(this.offlineManager.storeRequest(url, 'POST', basura));
+    } else {
+      return this.http.post( url, basura, {headers})
+                      .pipe(
+                        map( (resp: any) => {
+                            console.log(resp);
+                            return resp;
+                        })
+                      );
+    }
+
   }
 
   // Devuelve todos los registros de una basura por su codigo de contenedor único
