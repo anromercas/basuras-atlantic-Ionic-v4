@@ -24,6 +24,18 @@ export const BASURAS = [
     siglas: 'CPENC'
   },
   {
+    nombre: 'Contenedor de Envases Plásticos NO Contaminados',
+    imgContenedor: 'contenedor-plastico-envases-no-contaminados.png',
+    seleccionado: false,
+    siglas: 'CEPNC'
+  },
+  {
+    nombre: 'Contenedor de Envases Contaminados',
+    imgContenedor: 'contenedor-plastico-envases-no-contaminados.png',
+    seleccionado: false,
+    siglas: 'CEC'
+  },
+  {
     nombre: 'Contenedor de Plástico/envases Contaminados',
     imgContenedor: 'contenedor-plastico-envases-contaminados.png',
     seleccionado: false,

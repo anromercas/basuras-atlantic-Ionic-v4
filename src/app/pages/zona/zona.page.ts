@@ -31,6 +31,7 @@ export class ZonaPage implements OnInit {
                 let data = this.router.getCurrentNavigation().extras.queryParams.zona;
                 if ( data !== params ) {
                   this.zona = data;
+                  console.log(this.zona);
                 }
               });
 

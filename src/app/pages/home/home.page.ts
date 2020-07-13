@@ -21,6 +21,7 @@ export class HomePage implements OnInit {
               public usuarioService: UsuarioService
   ) {
     this.zonas = ZONAS.slice(0);
+    // console.log(this.zonas);
   }
 
   ngOnInit() {
